@@ -1,0 +1,17 @@
+a4f44f4d2a58545c15c4887b9080d1c5 *DESCRIPTION
+fecbc0786de25c18e7bb5fbcd3144161 *NAMESPACE
+5026c6fa97fd91cf069e6ab733f21de9 *R/automagic.R
+3690b2cc60f3101377ec87be016ea04e *R/deps_file.R
+05bdcb91e66646d6d41116a516d190ff *R/get_dependent_packages.R
+2efa0b73995d034c2502c984a021ffee *R/get_package_details.R
+41c82e7bd1855db08a72aea5e3fa6fc9 *R/install_package_guess.R
+7c347297e25583a54b741244494fa757 *R/parse_packages.R
+c16a0dda0d4d79f8a94b49968c529ae5 *R/zzz.R
+f57550c1e57fe4f7ed612cfeaf84c88a *README.md
+6eeb0a125f9de012c0088ffafee7eaee *man/automagic.Rd
+eb2162c0850e3fa99e0795d58f4dd39a *man/get_dependent_packages.Rd
+776db0a1ed3c48d3adcecfa8ae3ebf1c *man/get_package_details.Rd
+820aee81ef3cd59e4a70b259d5c2eeab *man/install_deps_file.Rd
+7168edecdb57e6711d59bbeaea76eda8 *man/install_package_guess.Rd
+10685b20b94520484e5fbef5cb54ebb6 *man/make_deps_file.Rd
+1f36f1f13831ea1e48365f10f2f01755 *man/parse_packages.Rd
