@@ -10,10 +10,9 @@
 #' @param directory directory containing R code to parse
 #'
 #' @export
-#' @import magrittr
 #' @seealso \code{\link{automagic}}
 make_deps_file <- function(directory=getwd()) {
-  pkg_names <- get_dependent_packages(directory)
+  pkg_names <- get_dependent_packages(directory) %>% unique()
   lapply(pkg_names,get_package_details) %>%
     yaml::as.yaml() %>%
     cat(file=file.path(directory,'deps.yaml'))
@@ -29,12 +28,6 @@ make_deps_file <- function(directory=getwd()) {
 #' @param directory directory containing \code{deps.yaml} file
 #'
 #' @export
-#' @importFrom magrittr %>%
-#' @importFrom dplyr filter
-#' @importFrom dplyr select
-#' @importFrom dplyr contains
-#' @importFrom purrr pwalk
-#' @importFrom purrr walk2
 #' @seealso \code{\link{make_deps_file}}, \code{\link{automagic}}
 install_deps_file <- function(directory=getwd()) {
 
@@ -44,16 +37,18 @@ install_deps_file <- function(directory=getwd()) {
   deps <- yaml::yaml.load_file(deps_file) %>%
     dplyr::bind_rows()
 
-  gh_deps <-  deps %>%dplyr::filter(!is.na(GithubRepo))
-  if (!nrow(gh_deps) == 0) {
-    gh_deps <- gh_deps %>%
-      dplyr::mutate(install_calls = paste0(GithubUsername,'/',GithubRepo,'@',GithubSHA1))
-    remotes::install_github(gh_deps$install_calls)
+  if ('GithubRepo' %in% names(deps)) {
+    gh_deps <- deps %>% dplyr::filter(!is.na(GithubRepo))
+    if (!nrow(gh_deps) == 0) {
+      gh_deps <- gh_deps %>%
+        dplyr::mutate(install_calls = paste0(GithubUsername,'/',GithubRepo,'@',GithubSHA1))
+      remotes::install_github(gh_deps$install_calls)
+    }
   }
 
-  cran_deps <-  deps %>%dplyr::filter(Repository == 'CRAN')
+  cran_deps <- deps %>% dplyr::filter(Repository == 'CRAN')
   # install CRAN package given version number
   if (!nrow(cran_deps) == 0) {
-    purrr::walk2(cran_deps$Package,cran_deps$Version,devtools::install_version,type='source')
+    purrr::walk2(cran_deps$Package,cran_deps$Version, remotes::install_version,type='source')
   }
 }
